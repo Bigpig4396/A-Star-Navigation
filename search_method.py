@@ -36,42 +36,9 @@ class Node(object):
         print('Heuristic cost = ', self.h)
         print('Total cost = ', self.f)
 
-def A_star(maze, start, end):
-    """
-        Reimplementation of A* search:
-            Input:
-                maze: a 2D array contains the grid map of the maze. i.e. 0 for space, 1 for wall
-                start: 1x2 array contains the start position
-                end: 1x2 array contains the end position
-
-            Output:
-                path: list of cells that construct the trajectory
-
-        Idea:
-            A* search algorithm gives each node a 'brain'. For each know, it knows:
-                1. g: The cost of traverse to it from some the parent node
-                2. h: The cost of traverse to the goal from the node.
-                3. f: g + h
-
-            The searching process is:
-                1. construct to lists:
-                    open_list: contains all the promising next node.
-                        1) legal next node (no obstacle, i.e. 0)
-                        2) least cost (node.f < open_node.f or not in open_list)
-                        3) not visited (not in closed list)
-                    closed_list: contains all the searched node.
-                2. repeat:
-                    adding the proper neighbors of the current node to the open list.
-
-            Searching to a direction that is legal and have least potential.
-
-            Note:
-                heuristic:
-                    manhanton dist: 4
-                    euclidean dist: 8
-    """
-    # set the start and end points to be zero
-    print("A star search begin: Start {} - End {}".format(start, end))
+def A_star(temp_maze, start, end):
+    # print("A star search begin: Start {} - End {}".format(start, end))
+    maze = temp_maze.copy()
     maze[start[0]][start[1]] = 0
     maze[end[0]][end[1]] = 0
 
@@ -162,6 +129,7 @@ def A_star(maze, start, end):
 
             if not in_open_flag:
                 open_list.append(new_node)
+    return []
 
 
 
