@@ -112,7 +112,7 @@ class Maze:
 		s+=self.empty
 		return s
 
-	def to_np(self):
+	def get_map(self):
 		s = np.zeros((2*self.height+1, 2*self.width+1), dtype=np.int)
 		print(s.shape)
 		for col in range(0, 2*self.width+1):
@@ -146,7 +146,7 @@ class Maze:
 			s[2*row+2][-1] = 1
 		return s
 
-	def get_map(self, map_np):
+	def scale(self, map_np):
 		new_map_np = np.zeros((self.scaling * map_np.shape[0], self.scaling * map_np.shape[1]))
 		for i in range(map_np.shape[0]):
 			for j in range(map_np.shape[1]):
@@ -161,9 +161,6 @@ class Maze:
 		return new_map_np
 
 	def portals_str(self):
-		'''
-		Returns a string containing a list of all portal coordinates
-		'''
 		i = 1
 		s = 'Portal Coordinates\n'
 		for key, portals in self.portals.items():
@@ -177,8 +174,6 @@ class Maze:
 		return s
 
 	def init_symbols(self, symbols):
-		#get symbol colors _color + bg_color
-		
 		start_color = symbols['start_color'] if 'start_color' in symbols else ''
 		start_bg_color = symbols['start_bg_color'] if 'start_bg_color' in symbols else ''
 
@@ -207,6 +202,7 @@ class Maze:
 		self.empty = empty_color+' '
 	
 	def kruskalize(self):
+		# edge = ((row1, col1), (row2, col2)) such that grid[row][col] = key
 		edges_ordered = [ ]
 		# First add all neighboring edges into a list
 		for row in range(0, self.height):
@@ -263,7 +259,6 @@ class Maze:
 				disjoint_set.union(set_a, set_b)
 
 	def move(self, direction):
-
 		assert(direction in [self.LEFT, self.RIGHT, self.UP, self.DOWN])
 		# if new move is the same as last move pop from path onto player 
 		new_move = (self.player[0]+direction[0],\
@@ -387,4 +382,11 @@ class Maze:
 		self.time_taken = time.time() - start_time
 
 	def is_done(self):
+		'''
+		Used to indicate of the player has completed the maze
+		@params
+			None
+		@return
+			True if player has reached the end
+		'''
 		return self.player == (self.width-1, self.height-1)
